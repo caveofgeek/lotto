@@ -20,6 +20,9 @@
       <h2>Register Member</h2>
       <div class="w-form">
         <form action='#' method='POST' id="registration-form" name="registration-form" data-name="Registration Form">
+          <?php
+            if(isset($_SESSION['uid']))
+          ?>
           <input class="w-input form-padding" id="fullname" type="text" placeholder="Enter your fullname" name="fullname" data-name="Fullname" required="required">
           <input class="w-input form-padding" id="nickname" type="text" placeholder="Enter your nickname" name="nickname" data-name="Nickname" required="required">
           <input class="w-input form-padding" id="phone" type="text" placeholder="Enter your phone" name="phone" data-name="Phone" required="required">
@@ -31,6 +34,7 @@
           <? if($submitResult){ ?>
             <div class="w-form-done">
               <p>ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว ขอบคุณที่ใช้บริการ</p>
+              <a href="./login.php">กรุณา login  เข้าใช้งานระบบ </a>
             </div>
           <? } else{ ?>
             <div class="w-form-fail">
