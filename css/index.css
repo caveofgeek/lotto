@@ -58,8 +58,10 @@ p {
 }
 .content-block {
   width: 92%;
-  margin-top: 25px;
+  margin-top: 50px;
   margin-bottom: 25px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid gray;
   padding-left: 25px;
 }
 .left-sidebar {
@@ -132,6 +134,30 @@ p {
 .fixed-nav {
   position: fixed;
   width: 33.34%;
+}
+.radio-up {
+  width: 50px;
+  float: left;
+}
+.radio-down {
+  float: left;
+}
+.detail-lotto {
+  margin-left: 20px;
+}
+.btn-confirm {
+  margin-top: 15px;
+  padding: 0px;
+}
+.small-size {
+  width:50%;
+}
+.type-for-3char, .type-for-3char2, .type-for-3char3, .type-for-3char4 {
+  display: none;
+}
+
+.btn-confirm-cash {
+  margin-top: 15px;
 }
 @media (max-width: 991px) {
   .image-example {

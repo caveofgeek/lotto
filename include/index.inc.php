@@ -1,7 +1,7 @@
 <?php
   @session_start();
   require_once('config.inc.php');
-  if(isset($_SESSION['uid'])) goHome();
+  if(!isset($_SESSION['uid'])) goLogin();
 
   if(isset($_POST['submit'])) {
     $fullname = secure($_POST['fullname']);
