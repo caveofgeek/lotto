@@ -18,11 +18,11 @@
 <body>
   <?php require_once('include/index.inc.php'); ?>
   <div class="w-row">
-    <div class="w-col w-col-4 left-sidebar">
+    <div class="w-col w-col-3 left-sidebar">
       <?php include "./navbar.php" ?>
     </div>
 
-    <div class="w-col w-col-8 content-column">
+    <div class="w-col w-col-9 content-column">
       <?php
           if (isset($_SESSION['permission']) && $_SESSION['permission'] == "user")
           {
@@ -33,7 +33,7 @@
                 <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
                 nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
               <div class="w-row">
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
                       <form id="buy-lotto" name="buy-lotto" data-name="Lotto Buying Form">
@@ -75,16 +75,19 @@
                             <label class="w-form-label" for="radio">โต๊ด</label>
                           </div>
                         </div>
+
                         <label for="number">ใส่เลขที่ต้องการซื้อ</label>
-                        <input class="w-input small-size" id="number" type="number" placeholder="ใส่ตัวเลข" name="number" data-name="number" required="required">
+                        <input class="w-input small-size" id="number" type="text" placeholder="ใส่ตัวเลข" name="number" data-name="number" minlength="2" maxlength="2">
+                        <p id="alert-number" class="helper">กรุณาระบุตัวเลข หรือ ระบุตัวเลขให้ตรงตามประเภทที่ซื้อเท่านั้น</p>
                         <label for="price">จำนวนเงิน(บาท)</label>
-                        <input class="w-input small-size" id="price" type="number" placeholder="ใส่จำนวนเงิน" name="price" data-name="price" required="required">
-                        <input class="w-button" id="sub_add_lotto" name="sub_add_lotto" type="submit" value="Submit" data-wait="Please wait...">
+                        <input class="w-input small-size" id="price" type="text" placeholder="ใส่จำนวนเงิน" name="price" data-name="price">
+                        <p id="alert-price" class="helper">กรุณาระบุราคาเป็นตัวเลขเท่านั้น</p>
+                        <input class="w-button" id="sub_add_lotto" name="sub_add_lotto" type="submit" value="Submit" data-wait="Please wait..." disabled>
                       </form>
                     </div>
                   </div>
                 </div>
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-9">
                   <div class="detail-lotto">
                     <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
@@ -233,7 +236,7 @@
                 <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
                 nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
               <div class="w-row">
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
                       <form id="report-user" name="report-user" data-name="report-user">
@@ -280,7 +283,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-9">
                   <div class="detail-lotto">
                     <h4 class="w-embed">ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
@@ -426,7 +429,7 @@
                 <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
                 nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
               <div class="w-row">
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
                       <form id="check-payment-form" name="check-payment-form" data-name="Check Payment Form">
@@ -473,7 +476,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-9">
                   <div class="detail-lotto">
                     <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
@@ -526,7 +529,7 @@
                 <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
                 nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
               <div class="w-row">
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
                       <form id="result-buying" name="result-buying" data-name="Result Form">
@@ -573,7 +576,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="w-col w-col-6">
+                <div class="w-col w-col-9">
                   <div class="detail-lotto">
                     <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
@@ -874,7 +877,7 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="js/webflow.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
   <!--[if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
