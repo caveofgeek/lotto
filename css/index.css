@@ -141,6 +141,19 @@ p {
   color:red;
   font-size: 12px;
 }
+
+div.summary {
+  width: 100%;
+  font-weight: bold;
+  font-size:16px;
+  text-align: right;
+}
+
+div.summary span {
+  margin-left: 30px;
+  margim-right: 30px;
+}
+
 @media (max-width: 991px) {
   .image-example {
     background-image: url('../images/example-bg.png');

@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	var length = 2;
+	var buy_lotto_row = 1;
+	var total_price = 0;
 	$("#3char").click(function(){
 		$(".type-for-3char").css("display","block");
 		length = $(this).val();
@@ -62,4 +64,56 @@ $(document).ready(function(){
 			$("#sub_add_lotto").attr("disabled", "disabled");
 		}
 	});
+
+	/* Index Action  */
+	$("#sub_add_lotto").click(function(e){
+		var data = $("#buy-lotto").serializeArray();
+		add_lotto(data);
+
+		e.preventDefault()
+  	e.stopPropagation()
+	});
+
+	function add_lotto(data) {
+		var lotto_data = "<tr id =" + buy_lotto_row + ">";
+
+		jQuery.each( data, function( i, field ) {
+			var add_data = field.value;
+			var lotto_len = 0;
+			switch (i) {
+				case 1:
+					lotto_len = parseInt(add_data);
+					add_data += " ตัว";
+					break;
+				case 2:
+					add_data = add_data == "up" ? "บน" : "ล่าง";
+					break;
+				case 3:
+					if (lotto_len <= 2) {
+						add_data = "-";
+					}
+					else{
+						add_data = field.value == "teng" ? "เต้ง" : "โต๊ด";
+					}
+					break;
+				case 5:
+					total_price += parseFloat(add_data);
+					add_data = parseFloat(add_data).toLocaleString("en-IN");
+					break;
+			}
+			lotto_data +=	"<td>" + add_data + "</td>";
+    });
+
+    lotto_data +=	"<td> <a href='javascript:void(0)' onclick=edit_data('" + buy_lotto_row + "'')>แก้ไข</a> </td>";
+    lotto_data +=	"<td> <a href='javascript:void(0)' onclick=del_data('" + buy_lotto_row + "'')  >ลบ</a> </td>";
+
+		lotto_data +=	"</tr>";
+		$("#table-lotto tbody").append(lotto_data);
+		$("#buy-lotto").closest('form').find("input[type=text]").val("");
+		$("#sum_topic").text("รวมทั้งสิ้น");
+		$("#qty").text(buy_lotto_row + " รายการ");
+		$("#total_price").text(total_price.toLocaleString("en-IN") + " บาท");
+		buy_lotto_row++;
+	}
+
 });

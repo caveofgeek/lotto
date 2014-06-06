@@ -36,7 +36,7 @@
                 <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
-                      <form id="buy-lotto" name="buy-lotto" data-name="Lotto Buying Form">
+                      <form id="buy-lotto" action="#" method="post" name="buy-lotto" data-name="Lotto Buying Form">
                         <label for="name">งวดที่ซื้อ</label>
                         <select class="w-select small-size" id="date_lotto" name="date_lotto">
                             <option value="01/05/2014">01/05/2014</option>
@@ -82,7 +82,7 @@
                         <label for="price">จำนวนเงิน(บาท)</label>
                         <input class="w-input small-size" id="price" type="text" placeholder="ใส่จำนวนเงิน" name="price" data-name="price">
                         <p id="alert-price" class="helper">กรุณาระบุราคาเป็นตัวเลขเท่านั้น</p>
-                        <input class="w-button" id="sub_add_lotto" name="sub_add_lotto" type="submit" value="Submit" data-wait="Please wait..." disabled>
+                        <input class="w-button" id="sub_add_lotto" name="sub_add_lotto" type="submit" value="Submit" disabled>
                       </form>
                     </div>
                   </div>
@@ -91,7 +91,7 @@
                   <div class="detail-lotto">
                     <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
-                      <table class="table table-condensed">
+                      <table class="table table-condensed" id="table-lotto">
                         <thead>
                           <tr>
                             <th>งวดที่</th>
@@ -100,128 +100,15 @@
                             <th>ประเภทที่ซื้อ</th>
                             <th>เลขที่ซื้อ</th>
                             <th>ราคา ( บาท )</th>
+                            <th colspan="2">รายการ</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td colspan="4">รวมทั้งสิ้น ​</td>
-                            <td>14</td>
-                            <td>14,000,000.00</td>
-                          </tr>
                         </tbody>
                       </table>
+                    </div>
+                    <div class="summary">
+                      <span id="sum_topic"></span><span id="qty"></span><span id="total_price"></span>
                     </div>
                     <div class="w-embed btn-confirm">
                       <button>ยืนยันการสั่งซื้อ</button>
