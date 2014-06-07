@@ -4,7 +4,7 @@
 <html data-wf-site="5384ab401fae7daf76e9d624">
 <head>
   <meta charset="utf-8">
-  <title>Lotto</title>
+  <title>ระบบจัดการหวย</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="Webflow">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
