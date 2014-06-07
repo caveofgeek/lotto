@@ -21,7 +21,7 @@
     /** INTERNAL: The last result ressource of a query().
       */
     var $lastResult;
-	
+
 	var $test_val = 20;
 
     /** Connect to a MySQL database to be able to use the methods below.
@@ -32,7 +32,7 @@
       $this->nbQueries  = 0;
       $this->lastResult = NULL;
       mysql_connect($server, $user, $pass) or die('Server connexion not possible.');
-      mysql_select_db($base)               or die('Database connexion not possible.');	  
+      mysql_select_db($base)               or die('Database connexion not possible.');
     }
 
     /** Query the database.

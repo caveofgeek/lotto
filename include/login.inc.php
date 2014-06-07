@@ -8,11 +8,12 @@
     $password = secure($_POST['password']);
     $password = encrypt($password);
 
-    $result = $db->query("select user_id from user where username='{$username}' and password='{$password}'");
+    $result = $db->query("select user_id, permission from user where username='{$username}' and password='{$password}'");
     $numrow = $db->numRows($result);
     if($numrow > 0){
       $value = mysql_fetch_object($result);
       $_SESSION['uid'] = $value->user_id;
+      $_SESSION['permission'] = $value->permission;
       goHome();
     }
   }
