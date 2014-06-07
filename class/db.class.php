@@ -57,9 +57,9 @@
     function execute($query, $debug = -1)
     {
       $this->nbQueries++;
-      mysql_query($query) or $this->debugAndDie($query);
+      if (mysql_query($query) or $this->debugAndDie($query) ) return true;
 
-      $this->debug($debug, $query);
+      //$this->debug($debug, $query);
     }
     /** Convenient method for mysql_fetch_object().
       * @param $result The ressource returned by query(). If NULL, the last result returned by query() will be used.

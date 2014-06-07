@@ -4,7 +4,7 @@
 <html data-wf-site="538365b95aa5711a549509d5">
 <head>
   <meta charset="utf-8">
-  <title>Registration</title>
+  <title>สมัครสมาชิกใหม่</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="Webflow">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
@@ -17,17 +17,17 @@
   <?php require_once('include/register.inc.php'); ?>
   <div class="w-container">
     <section class="section-login">
-      <h2>Register Member</h2>
+      <h2>สมัครสมาชิกใหม่</h2><a href="./login.php">กลับสู่หน้าเข้าใช้งานระบบ</a>
       <div class="w-form">
         <form action='#' method='POST' id="registration-form" name="registration-form" data-name="Registration Form">
           <?php
             if(isset($_SESSION['uid']))
           ?>
-          <input class="w-input form-padding" id="fullname" type="text" placeholder="Enter your fullname" name="fullname" data-name="Fullname" required="required">
-          <input class="w-input form-padding" id="nickname" type="text" placeholder="Enter your nickname" name="nickname" data-name="Nickname" required="required">
-          <input class="w-input form-padding" id="phone" type="text" placeholder="Enter your phone" name="phone" data-name="Phone" required="required">
-          <input class="w-input form-padding" id="username" type="text" placeholder="Enter your username" name="username" data-name="Username" required="required">
-          <input type="password" class="w-input form-padding" id="password" type="text" placeholder="Enter your password" name="password" data-name="Password" required="required">
+          <input class="w-input form-padding" id="fullname" type="text" placeholder="กรอกชื่อจริง นามสกุล" name="fullname" data-name="Fullname" required="required">
+          <input class="w-input form-padding" id="nickname" type="text" placeholder="กรอกชื่อเล่น" name="nickname" data-name="Nickname" required="required">
+          <input class="w-input form-padding" id="phone" type="text" placeholder="กรอกเบอร์โทรศัพท์" name="phone" data-name="Phone" required="required">
+          <input class="w-input form-padding" id="username" type="text" placeholder="กรอกชื่อผู้ใช้งานระบบ" name="username" data-name="Username" required="required">
+          <input type="password" class="w-input form-padding" id="password" type="text" placeholder="กรอกรหัสผ่าน" name="password" data-name="Password" required="required">
           <input class="w-button btn-submit" type="submit" name="submit" value="Submit" data-wait="Please wait...">
         </form>
         <? if(isset($_POST['submit'])){ ?>

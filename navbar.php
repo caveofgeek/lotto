@@ -18,5 +18,6 @@
   <?php
     }
   ?>
+  <a class="nav-link" href="./edit_user.php">แก้ไขข้อมูลส่วนตัว</a>
   <a class="nav-link" href="./logout.php">ออกจากระบบ</a>
 </div>
