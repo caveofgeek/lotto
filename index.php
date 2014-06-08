@@ -678,16 +678,17 @@
                 </div>
               </div>
             </div>
+
             <div class="w-clearfix content-block">
               <h1 id="management-members">จัดการ User</h1>
               <p>คำอธิบาย
                 <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
                 nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
               <div>
-                <h4>มีสมาชิก xx คน</h4>
+                <h4>มีสมาชิก <? echo $member_count; ?> คน</h4>
               </div>
               <div class="w-form">
-                <form id="manage-user" name="manage-user" data-name="Manage User Form">
+                <form action="#" method="POST" id="manage-user" name="manage-user" data-name="Manage User Form">
                   <div class="w-embed">
                     <table class="table table-condensed">
                       <thead>
@@ -701,54 +702,20 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>นาย สมร สมทรง</td>
-                          <td>บอส</td>
-                          <td>090-112-3134</td>
-                          <td>aaaaa</td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>นาย สมร สมทรง</td>
-                          <td>บอส</td>
-                          <td>090-112-3134</td>
-                          <td>aaaaa</td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>นาย สมร สมทรง</td>
-                          <td>บอส</td>
-                          <td>090-112-3134</td>
-                          <td>aaaaa</td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>นาย สมร สมทรง</td>
-                          <td>บอส</td>
-                          <td>090-112-3134</td>
-                          <td>aaaaa</td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                          <td align="center">
-                            <input type="checkbox">
-                          </td>
-                        </tr>
+                        <?
+                          $members = $db->query("select * from user where user_id!={$_SESSION['uid']} and permission!='admin'");
+
+                          while ($row = mysql_fetch_array($members)) {
+                        ?>
+                          <tr>
+                            <td><? echo $row['fullname']; ?></td>
+                            <td><? echo $row['nickname']; ?></td>
+                            <td><? echo $row['phone']; ?></td>
+                            <td><? echo $row['username']; ?></td>
+                            <td><input type="checkbox" name="permission[]" value="<? echo $row['user_id']; ?>"></td>
+                            <td><input type="checkbox" name="del_member[]" value="<? echo $row['user_id']; ?>"></td>
+                          </tr>
+                        <? } ?>
                       </tbody>
                     </table>
                   </div>
