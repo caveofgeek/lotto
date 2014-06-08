@@ -39,8 +39,13 @@
                       <form id="buy-lotto" action="#" method="post" name="buy-lotto" data-name="Lotto Buying Form">
                         <label for="name">งวดที่ซื้อ</label>
                         <select class="w-select small-size" id="date_lotto" name="date_lotto">
-                            <option value="01/05/2014">01/05/2014</option>
-                            <option value="01/05/2014">16/05/2014</option>
+                            <?php
+                              $month_year = date("m/Y");
+                              $cycle1 = "01/".$month_year;
+                              $cycle2 = "16/".$month_year;
+                            ?>
+                            <option value="<?php echo $cycle1; ?>"><?php echo $cycle1; ?></option>
+                            <option value="<?php echo $cycle2; ?>"><?php echo $cycle2; ?></option>
                         </select>
                         <label for="2char">ประเภทหวยที่ซื้อ&nbsp;&nbsp;( 2 หรือ 3 ตัว )</label>
                         <div class="w-clearfix">
@@ -89,7 +94,6 @@
                 </div>
                 <div class="w-col w-col-9">
                   <div class="detail-lotto">
-                    <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
                       <table class="table table-condensed" id="table-lotto">
                         <thead>
@@ -100,7 +104,7 @@
                             <th>ประเภทที่ซื้อ</th>
                             <th>เลขที่ซื้อ</th>
                             <th>ราคา ( บาท )</th>
-                            <th colspan="2">รายการ</th>
+                            <th>#</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -111,7 +115,10 @@
                       <span id="sum_topic"></span><span id="qty"></span><span id="total_price"></span>
                     </div>
                     <div class="w-embed btn-confirm">
-                      <button>ยืนยันการสั่งซื้อ</button>
+                      <form id="confirm-lotto" action="#" method="post" name="confirm-lotto" data-name="Lotto Confirm Form">
+                        <div></div>
+                        <input class="w-button" id="confirm_lotto" name="confirm_lotto" type="submit" value="ยืนยันการสั่งซื้อ">
+                      </form>
                     </div>
                   </div>
                 </div>
