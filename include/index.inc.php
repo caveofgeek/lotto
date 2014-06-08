@@ -19,4 +19,27 @@
       $submitResult = true;
     }
   }
+
+  if(isset($_POST['confirm_lotto'])) {
+    if(isset($_POST['lotto_data'])) {
+      $sql = "INSERT INTO  buy ( buy_time , user_id ,  buy_status ) VALUES (CURDATE(),{$_SESSION['uid']},'N')";
+      if ($db->execute($sql)) {
+        $buy_id = $db->lastInsertedId();
+        foreach ($_POST['lotto_data'] as $row) {
+          $lotto = split(",",$row);
+          $time = strtotime($lotto[0]);
+          $newformat = date('Y-m-d',$time);
+          $date_cycle = $newformat;
+          $type = $lotto[1];
+          $pos = $lotto[2];
+          $buy_type = $type == 3 ? $lotto[3] : "NULL";
+          $num = $lotto[4];
+          $price = $lotto[5];
+          $sql = "INSERT INTO lotto (buy_id, buy_cycle, lotto_number, lotto_typedigit, lotto_pos, lotto_pay, lotto_price)
+                VALUES ({$buy_id},'{$date_cycle}',{$num},{$type},'{$pos}','{$buy_type}',{$price})";
+          $db->execute($sql);
+        }
+      }
+    }
+  }
 ?>

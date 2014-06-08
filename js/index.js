@@ -1,7 +1,8 @@
+var length = 2;
+var buy_lotto_row = 0;
+var total_price = 0;
+
 $(document).ready(function(){
-	var length = 2;
-	var buy_lotto_row = 1;
-	var total_price = 0;
 	$("#3char").click(function(){
 		$(".type-for-3char").css("display","block");
 		length = $(this).val();
@@ -73,47 +74,70 @@ $(document).ready(function(){
 		e.preventDefault()
   	e.stopPropagation()
 	});
+});
 
-	function add_lotto(data) {
-		var lotto_data = "<tr id =" + buy_lotto_row + ">";
+function add_lotto(data) {
+	buy_lotto_row++;
+	var lotto_data = "<tr id =lotto" + buy_lotto_row + ">";
+	var input_hidden ="";
+	var unit_data = [];
+	jQuery.each( data, function( i, field ) {
+		var add_data = field.value;
+		unit_data.push(add_data);
+		var lotto_len = 0;
+		switch (i) {
+			case 1:
+				lotto_len = parseInt(add_data);
+				add_data += " ตัว";
+				break;
+			case 2:
+				add_data = add_data == "up" ? "บน" : "ล่าง";
+				break;
+			case 3:
+				if (lotto_len <= 2) {
+					add_data = "-";
+				}
+				else{
+					add_data = field.value == "teng" ? "เต้ง" : "โต๊ด";
+				}
+				break;
+			case 5:
+				total_price += parseFloat(add_data);
+				add_data = parseFloat(add_data).toLocaleString("en-IN");
+				break;
+		}
+		input_hidden = "<input type='hidden' name='lotto_data[]' id='lotto_hidden" + buy_lotto_row + "' value=" + unit_data + ">";
+		//total_data[buy_lotto_row - 1] = unit_data;
+		lotto_data +=	"<td>" + add_data + "</td>";
+  });
 
-		jQuery.each( data, function( i, field ) {
-			var add_data = field.value;
-			var lotto_len = 0;
-			switch (i) {
-				case 1:
-					lotto_len = parseInt(add_data);
-					add_data += " ตัว";
-					break;
-				case 2:
-					add_data = add_data == "up" ? "บน" : "ล่าง";
-					break;
-				case 3:
-					if (lotto_len <= 2) {
-						add_data = "-";
-					}
-					else{
-						add_data = field.value == "teng" ? "เต้ง" : "โต๊ด";
-					}
-					break;
-				case 5:
-					total_price += parseFloat(add_data);
-					add_data = parseFloat(add_data).toLocaleString("en-IN");
-					break;
-			}
-			lotto_data +=	"<td>" + add_data + "</td>";
-    });
+  lotto_data +=	"<td> <a href='javascript:void(0)' onclick='del_data("+ buy_lotto_row +")'>ลบ</a> </td>";
 
-    lotto_data +=	"<td> <a href='javascript:void(0)' onclick=edit_data('" + buy_lotto_row + "'')>แก้ไข</a> </td>";
-    lotto_data +=	"<td> <a href='javascript:void(0)' onclick=del_data('" + buy_lotto_row + "'')  >ลบ</a> </td>";
+	lotto_data +=	"</tr>";
+	$("#confirm-lotto div").append(input_hidden);
+	$("#table-lotto tbody").append(lotto_data);
+	$("#buy-lotto").closest('form').find("input[type=text]").val("");
+	summary_text();
+}
 
-		lotto_data +=	"</tr>";
-		$("#table-lotto tbody").append(lotto_data);
-		$("#buy-lotto").closest('form').find("input[type=text]").val("");
+function summary_text() {
+	if (buy_lotto_row <= 0) {
+		$("#sum_topic").text("");
+		$("#qty").text("");
+		$("#total_price").text("");
+		total_data = [];
+	} else {
+
 		$("#sum_topic").text("รวมทั้งสิ้น");
 		$("#qty").text(buy_lotto_row + " รายการ");
 		$("#total_price").text(total_price.toLocaleString("en-IN") + " บาท");
-		buy_lotto_row++;
 	}
+}
 
-});
+function del_data(rowindex) {
+	var current_price = $("#table-lotto tbody tr#lotto"+rowindex+" td:eq(5)").html()
+	$("#table-lotto tbody tr#lotto"+rowindex).remove();
+	$("#confirm-lotto div input#lotto_hidden"+rowindex).remove();
+	buy_lotto_row -= 1; // -2 because buy_lotto_row more than current row
+	summary_text()
+}
