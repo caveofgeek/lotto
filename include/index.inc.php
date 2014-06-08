@@ -3,6 +3,10 @@
   require_once('config.inc.php');
   if(!isset($_SESSION['uid'])) goLogin();
 
+  // Retrieve user count.
+  $result = $db->query("select * from user");
+  $member_count = $db->numRows($result);
+
   if(isset($_POST['submit'])) {
     $fullname = secure($_POST['fullname']);
     $nickname = secure($_POST['nickname']);
@@ -41,5 +45,16 @@
         }
       }
     }
+  }
+
+  if(isset($_POST['sub_manage_user'])) {
+    // Delete member.
+    $elems = implode(',', $_POST['del_member']);
+    $db->execute("delete from user where user_id in({$elems})");
+
+    // Remove deleted user from permission array.
+    $permission = array_diff($_POST['permission'], $_POST['del_member']);
+    $elems = implode(',', $permission);
+    $db->execute("update user set permission='admin' where user_id in({$elems})");
   }
 ?>
