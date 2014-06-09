@@ -21,7 +21,6 @@
     <div class="w-col w-col-3 left-sidebar">
       <?php include "./navbar.php" ?>
     </div>
-
     <div class="w-col w-col-9 content-column">
       <?php
           if (isset($_SESSION['permission']) && $_SESSION['permission'] == "user")
@@ -36,14 +35,9 @@
                 <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
-                      <form id="buy-lotto" action="#" method="post" name="buy-lotto" data-name="Lotto Buying Form">
+                      <form id="buy-lotto" action="index.php#buying-lotto" method="post" name="buy-lotto" data-name="Lotto Buying Form">
                         <label for="name">งวดที่ซื้อ</label>
                         <select class="w-select small-size" id="date_lotto" name="date_lotto">
-                            <?php
-                              $month_year = date("m/Y");
-                              $cycle1 = "01/".$month_year;
-                              $cycle2 = "16/".$month_year;
-                            ?>
                             <option value="<?php echo $cycle1; ?>"><?php echo $cycle1; ?></option>
                             <option value="<?php echo $cycle2; ?>"><?php echo $cycle2; ?></option>
                         </select>
@@ -112,7 +106,7 @@
                       </table>
                     </div>
                     <div class="summary">
-                      <span id="sum_topic"></span><span id="qty"></span><span id="total_price"></span>
+                      <span class="sum_topic"></span><span class="qty"></span><span class="total_price"></span>
                     </div>
                     <div class="w-embed btn-confirm">
                       <form id="confirm-lotto" action="#" method="post" name="confirm-lotto" data-name="Lotto Confirm Form">
@@ -125,7 +119,7 @@
               </div>
             </div>
             <div class="w-clearfix content-block">
-              <h1 id="member-report">รายงานการซื้อของ User xxxx</h1>
+              <h1 id="member-report">รายงานการซื้อของ <?php echo $_SESSION['username']; ?></h1>
               <p>คำอธิบาย
                 <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
                 nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
@@ -133,11 +127,17 @@
                 <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
-                      <form id="report-user" name="report-user" data-name="report-user">
-                        <label for="radio">ค้นหาจากงวดที่</label>
+                      <form id="report-user" action="index.php#member-report" method="post" name="report-user" data-name="report-user">
+                        <label for="radio">ค้นหาจากวันทีซื้อ</label>
                         <select class="w-select small-size" id="find_date" name="find_date">
-                          <option value="01/05/2014">01/05/2014</option>
-                          <option value="16/05/2014">16/05/2014</option>
+                          <?php
+                            while($row = $db->fetchNextObject($buy_result)) {
+                              $time = strtotime($row->buy_time);
+                              $newformat = date('d/m/Y',$time);
+                              echo "<option value='{$row->buy_time}'>{$newformat}</option>";
+                            }
+                            $db->resetFetch($buy_result);
+                          ?>
                         </select>
                         <label for="2char2">ประเภทหวยที่ซื้อ&nbsp;&nbsp;( 2 หรือ 3 ตัว )</label>
                         <div class="w-clearfix">
@@ -179,12 +179,12 @@
                 </div>
                 <div class="w-col w-col-9">
                   <div class="detail-lotto">
-                    <h4 class="w-embed">ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
                           <tr>
-                            <th>งวดที่</th>
+                            <th>วันที่ซื้อ</th>
+                            <th>งวดที่ซื้อ</th>
                             <th>ประเภท</th>
                             <th>ตำแหน่ง</th>
                             <th>ประเภทที่ซื้อ</th>
@@ -193,125 +193,49 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td colspan="4">รวมทั้งสิ้น ​</td>
-                            <td>14</td>
-                            <td>14,000,000.00</td>
+
+                          <?php
+                            $total = 0;
+                            $rows = 0;
+                            if ($db->numRows($search_result) > 0) {
+                              while($row = $db->fetchNextObject($search_result))
+                              {
+                                if ($row->lotto_typedigit <= 2) {
+                                  $pay_type = "-";
+                                }
+                                else{
+                                  $pay_type = $row->lotto_typedigit == "teng" ? "เต้ง" : "โต๊ด";
+                                }
+
+                                $time = strtotime($row->buy_cycle);
+                                $newformat_cycle = date('d/m/Y',$time);
+                                $time2 = strtotime($row->buy_time);
+                                $newformat_cycle2 = date('d/m/Y',$time2);
+                                $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง" ;
+                                $price = number_format($row->lotto_price);
+                                $total += $row->lotto_price;
+                                $rows++;
+                                echo "<tr>";
+                                echo "  <td>{$newformat_cycle2}</td>";
+                                echo "  <td>{$newformat_cycle}</td>";
+                                echo "  <td>{$row->lotto_typedigit} ตัว</td>";
+                                echo "  <td>{$pos}</td>";
+                                echo "  <td>{$pay_type}</td>";
+                                echo "  <td>{$row->lotto_number}</td>";
+                                echo "  <td>{$price}</td>";
+                                echo "</tr>";
+                              }
+                              $db->resetFetch($search_result);
+                            }
+                          ?>
                           </tr>
                         </tbody>
                       </table>
+                      <div class="summary">
+                        <span class="sum_topic">รวมทั้งสิ้น ​</span>
+                        <span class="qty"><?php echo $rows; ?> รายการ</span>
+                        <span class="total_price"><?php echo number_format($total); ?> บาท</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -326,45 +250,18 @@
                 <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
-                      <form id="check-payment-form" name="check-payment-form" data-name="Check Payment Form">
-                        <label for="radio">ค้นหาจากงวดที่</label>
-                        <select class="w-select small-size" id="find_date" name="find_date">
-                          <option value="01/05/2014">01/05/2014</option>
-                          <option value="16/05/2014">16/05/2014</option>
+                      <form id="check-payment-form" method="post" action="index.php#check-payment" name="check-payment-form" data-name="Check Payment Form">
+                        <label for="find_date">ค้นหาจากวันที่ซื้อ</label>
+                        <select class="w-select small-size" id="find_date2" name="find_date2">
+                          <?php
+                            while($row = $db->fetchNextObject($buy_result)) {
+                              $time = strtotime($row->buy_time);
+                              $newformat = date('d/m/Y',$time);
+                              echo "<option value='{$row->buy_time}'>{$newformat}</option>";
+                            }
+                            $db->resetFetch($buy_result);
+                          ?>
                         </select>
-                        <label for="2char3">ประเภทหวยที่ซื้อ&nbsp;&nbsp;( 2 หรือ 3 ตัว )</label>
-                        <div class="w-clearfix">
-                          <div class="w-radio radio-up">
-                            <input class="w-radio-input" id="2char3" type="radio" name="char" value="2" data-name="2char3">
-                            <label class="w-form-label" for="2char3">2 ตัว</label>
-                          </div>
-                          <div class="w-radio radio-down">
-                            <input class="w-radio-input" id="3char3" type="radio" name="char" value="3" data-name="3char3">
-                            <label class="w-form-label" for="3char3">3 ตัว</label>
-                          </div>
-                        </div>
-                        <label for="radio">ตำแหน่งที่ซื้อ</label>
-                        <div class="w-clearfix">
-                          <div class="w-radio radio-up">
-                            <input class="w-radio-input" id="up" type="radio" name="pos" value="up" data-name="up">
-                            <label class="w-form-label" for="radio">บน</label>
-                          </div>
-                          <div class="w-radio radio-down">
-                            <input class="w-radio-input" id="down" type="radio" name="pos" value="down" data-name="down">
-                            <label class="w-form-label" for="radio">ล่าง</label>
-                          </div>
-                        </div>
-                        <label class="type-for-3char3" for="radio">ประเภทสำหรับการซื้อ เฉพาะ 3 ตัวเท่านั้น</label>
-                        <div class="w-clearfix type-for-3char3">
-                          <div class="w-radio radio-up">
-                            <input class="w-radio-input" id="teng" type="radio" name="typepay" value="teng" data-name="teng" checked="true">
-                            <label class="w-form-label" for="radio">เต้ง</label>
-                          </div>
-                          <div class="w-radio radio-down">
-                            <input class="w-radio-input" id="tod" type="radio" name="typepay" value="tod" data-name="tod">
-                            <label class="w-form-label" for="radio">โต๊ด</label>
-                          </div>
-                        </div>
                         <input class="w-button" id="search_lotto_payment" name="search_lotto_payment" type="submit" value="Submit" data-wait="Please wait...">
                       </form>
                     </div>
@@ -372,39 +269,37 @@
                 </div>
                 <div class="w-col w-col-9">
                   <div class="detail-lotto">
-                    <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
                           <tr>
-                            <th>งวดที่</th>
-                            <th>ประเภท</th>
-                            <th>ตำแหน่ง</th>
-                            <th>ประเภทที่ซื้อ</th>
-                            <th>เลขที่ซื้อ</th>
-                            <th>ราคา ( บาท )</th>
+                            <th>วันที่ซื้อ</th>
+                            <th>การซื้อครั้งที่</th>
+                            <th>จำนวนรายการที่ซื้อ</th>
+                            <th>ราคารวม ( บาท )</th>
                             <th>สถานะการชำระ</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                            <td>ชำระเรียบร้อย</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                            <td>ชำระเรียบร้อย</td>
-                          </tr>
+                          <?php
+                            $runno = 1;
+                            while($row = $db->fetchNextObject($payment_result)) {
+                              $time = strtotime($row->buy_time);
+                              $newformat = date('d/m/Y',$time);
+                              $status = $row->buy_status == "N" ? "ยังไม่ได้ชำระ" : "ชำระเรียบร้อยแล้ว";
+                              $count_lotto = number_format($row->count_lotto);
+                              $amount = number_format($row->sum_price);
+                              echo "<tr>";
+                              echo "  <td>{$newformat}</td>";
+                              echo "  <td>{$runno}</td>";
+                              echo "  <td>{$count_lotto}</td>";
+                              echo "  <td>{$amount}</td>";
+                              echo "  <td>{$status}</td>";
+                              echo "</tr>";
+                              $runno++;
+                            }
+                            $db->resetFetch($payment_result);
+                          ?>
                         </tbody>
                       </table>
                     </div>
@@ -426,7 +321,7 @@
                 <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
-                      <form id="result-buying" name="result-buying" data-name="Result Form">
+                      <form id="result-buying" name="result-buying" method="post" action="index.php#admin-report-buying" data-name="Result Form">
                         <label for="radio">ค้นหาจากงวดที่</label>
                         <select class="w-select small-size" id="find_date" name="find_date">
                           <option value="01/05/2014">01/05/2014</option>
@@ -618,7 +513,7 @@
               <div>
                 <h4>รายการที่ยังไม่ได้ชำระเงิน</h4>
                 <div class="w-form">
-                  <form id="manage-payment" name="manage-payment" data-name="Manage Payment Form">
+                  <form id="manage-payment" name="manage-payment" method="post" action="index.php#management-payment" data-name="Manage Payment Form">
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
@@ -695,7 +590,7 @@
                 <h4>มีสมาชิก <? echo $member_count; ?> คน</h4>
               </div>
               <div class="w-form">
-                <form action="#" method="POST" id="manage-user" name="manage-user" data-name="Manage User Form">
+                <form action="index.php#management-members" method="POST" id="manage-user" name="manage-user" data-name="Manage User Form">
                   <div class="w-embed">
                     <table class="table table-condensed">
                       <thead>
