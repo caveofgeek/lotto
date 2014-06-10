@@ -1,3 +1,11 @@
+@media print {
+    input[type="submit"] {
+      display: none;
+    }
+    #table-lotto th:last-child, #table-lotto td:last-child {
+      display: none;
+    }
+}
 body {
   background-color: white;
   font-family: Arial, Helvetica, sans-serif;

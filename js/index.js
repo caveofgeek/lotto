@@ -71,8 +71,33 @@ $(document).ready(function(){
 		var data = $("#buy-lotto").serializeArray();
 		add_lotto(data);
 
-		e.preventDefault()
-  	e.stopPropagation()
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	/*  Print Data */
+	$("#print_lotto").click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('.detail-lotto').print();
+
+	});
+	$("#print_user_buying").click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('.detail-user-buying').print();
+
+	});
+	$("#print_user_payment").click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('.detail-user-payment').print();
+
+	});
+	$("#print_report_buying").click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('.report-buying').print();
 	});
 });
 
@@ -108,12 +133,12 @@ function add_lotto(data) {
 		}
 		input_hidden = "<input type='hidden' name='lotto_data[]' id='lotto_hidden" + buy_lotto_row + "' value=" + unit_data + ">";
 		//total_data[buy_lotto_row - 1] = unit_data;
-		lotto_data +=	"<td>" + add_data + "</td>";
-  });
+		lotto_data += "<td>" + add_data + "</td>";
+	});
 
-  lotto_data +=	"<td> <a href='javascript:void(0)' onclick='del_data("+ buy_lotto_row +")'>ลบ</a> </td>";
+	lotto_data += "<td> <a href='javascript:void(0)' onclick='del_data("+ buy_lotto_row +")'>ลบ</a> </td>";
 
-	lotto_data +=	"</tr>";
+	lotto_data += "</tr>";
 	$("#confirm-lotto div").append(input_hidden);
 	$("#table-lotto tbody").append(lotto_data);
 	$("#buy-lotto").closest('form').find("input[type=text]").val("");
@@ -128,9 +153,9 @@ function summary_text() {
 		total_data = [];
 	} else {
 
-		$("#sum_topic").text("รวมทั้งสิ้น");
-		$("#qty").text(buy_lotto_row + " รายการ");
-		$("#total_price").text(total_price.toLocaleString("en-IN") + " บาท");
+		$("#sum-user-lotto .sum_topic").text("รวมทั้งสิ้น");
+		$("#sum-user-lotto .qty").text(buy_lotto_row + " รายการ");
+		$("#sum-user-lotto .total_price").text(total_price.toLocaleString("en-IN") + " บาท");
 	}
 }
 
