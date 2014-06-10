@@ -1,6 +1,2 @@
-
 .DS_Store
-
-include/config.inc.php
-
 js/.DS_Store
