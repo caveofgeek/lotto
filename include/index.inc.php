@@ -13,7 +13,7 @@
   $cycle2 = "16/".$month_year;
 
   // get buying data
-  $sql = "select distinct buy_time from buy where user_id = {$_SESSION['uid']}";
+  $sql = "select distinct buy_time from buy where user_id = {$_SESSION['uid']} order by buy_time desc";
   $buy_result = $db->query($sql);
   $db->lastResult = NULL;
 
@@ -30,6 +30,20 @@
             user_id = {$_SESSION['uid']} and buy.buy_status = 'N'
             group by buy.buy_id, buy.buy_time ";
   $payment_result = $db->query($sql);
+  $db->lastResult = NULL;
+
+  // get buying data for Admin
+  $sql = "select distinct buy_time from buy order by buy_time desc";
+  $admin_buy_result = $db->query($sql);
+  $db->lastResult = NULL;
+
+  $sql = "select * from user where permission <> 'admin'";
+  $admin_user = $db->query($sql);
+  $db->lastResult = NULL;
+
+  // get default buying-data for admin
+  $sql = "select * from lotto,buy,user where lotto.buy_id = buy.buy_id and buy.user_id = user.user_id order by buy.buy_time, buy.user_id DESC LIMIT 30 ";
+  $search_admin_result = $db->query($sql);
   $db->lastResult = NULL;
 
 
@@ -63,10 +77,10 @@
     $type = $_POST['char'];
     $pos = $_POST['pos'];
     $buy_type = $type == 3 ? $_POST['typepay'] : "";
-    $serach_sql = "";
+    $search_sql = "select * from lotto,buy where lotto.buy_id = buy.buy_id";
 
     if ($search_date <> "") {
-      $search_sql = "select * from lotto,buy where lotto.buy_id = buy.buy_id and date(buy.buy_time) = date('{$search_date}') and user_id = " . $_SESSION['uid'];
+      $search_sql = " and date(buy.buy_time) = date('{$search_date}') and user_id = " . $_SESSION['uid'];
     }
 
     if ($type <> "") {
@@ -108,6 +122,40 @@
     $permission = array_diff($_POST['permission'], $_POST['del_member']);
     $elems = implode(',', $permission);
     $db->execute("update user set permission='admin' where user_id in({$elems})");
+    $db->lastResult = NULL;
+  }
+  // show user's buying for ADmin
+  else if (isset($_POST['search_lotto_admin'])) {
+    $search_date = trim($_POST['find_date3']);
+    $user_id = $_POST['user'];
+    $type = $_POST['char'];
+    $pos = $_POST['pos'];
+    $buy_type = $type == 3 ? $_POST['typepay'] : "";
+    $search_sql = "select * from lotto,buy,user where lotto.buy_id = buy.buy_id and buy.user_id = user.user_id";
+
+    if ($search_date <> "") {
+      $search_sql .= " and date(buy.buy_time) = date('{$search_date}')";
+    }
+
+    if ($type <> "") {
+      $search_sql .= " and lotto.lotto_typedigit = {$type}";
+    }
+
+    if ($pos <> "") {
+      $search_sql .= " and lotto.lotto_pos = '{$pos}'";
+    }
+
+    if ($buy_type <> "") {
+      $search_sql .= " and lotto.lotto_pay = '{$buy_type}'";
+    }
+
+    if ($user <> "" && $user <> "all") {
+      $search_sql .= " and buy.user_id = '{$user_id}'";
+    }
+
+    $search_sql .= " order by buy.buy_time, buy.user_id";
+
+    $search_admin_result = $db->query($search_sql);
     $db->lastResult = NULL;
   }
 ?>
