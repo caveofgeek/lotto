@@ -28,9 +28,7 @@
         ?>
             <div class="w-clearfix content-block">
               <h1 id="buying-lotto">ซื้อหวย</h1>
-              <p>คำอธิบาย
-                <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
-                nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+
               <div class="w-row">
                 <div class="w-col w-col-3">
                   <div class="form">
@@ -120,9 +118,7 @@
             </div>
             <div class="w-clearfix content-block">
               <h1 id="member-report">รายงานการซื้อของ <?php echo $_SESSION['username']; ?></h1>
-              <p>คำอธิบาย
-                <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
-                nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+
               <div class="w-row">
                 <div class="w-col w-col-3">
                   <div class="form">
@@ -243,9 +239,7 @@
             </div>
             <div class="w-clearfix content-block">
               <h1 id="check-payment">ตรวจสอบการชำระเงิน</h1>
-              <p>คำอธิบาย
-                <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
-                nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+
               <div class="w-row">
                 <div class="w-col w-col-3">
                   <div class="form">
@@ -314,18 +308,33 @@
         ?>
             <div class="w-clearfix content-block">
               <h1 id="admin-report-buying">รายงานสรุปการซื้อหวย (ADMIN)</h1>
-              <p>คำอธิบาย
-                <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
-                nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+
               <div class="w-row">
                 <div class="w-col w-col-3">
                   <div class="form">
                     <div class="w-form">
                       <form id="result-buying" name="result-buying" method="post" action="index.php#admin-report-buying" data-name="Result Form">
-                        <label for="radio">ค้นหาจากงวดที่</label>
-                        <select class="w-select small-size" id="find_date" name="find_date">
-                          <option value="01/05/2014">01/05/2014</option>
-                          <option value="16/05/2014">16/05/2014</option>
+                        <label for="radio">ค้นหาจากวันที่ซื้อ่</label>
+                        <select class="w-select small-size" id="find_date3" name="find_date3">
+                          <?php
+                            while($row = $db->fetchNextObject($admin_buy_result)) {
+                              $time = strtotime($row->buy_time);
+                              $newformat = date('d/m/Y',$time);
+                              echo "<option value='{$row->buy_time}'>{$newformat}</option>";
+                            }
+                            $db->resetFetch($admin_buy_result);
+                          ?>
+                        </select>
+
+                        <label for="radio">ค้นหาจากซื้อผู้ใช้งาน</label>
+                        <select class="w-select small-size" id="user" name="user">
+                          <?php
+                            echo "<option value='all'>ทั้งหมด</option>";
+                            while($row = $db->fetchNextObject($admin_user)) {
+                              echo "<option value='{$row->user_id}'>{$row->fullname}</option>";
+                            }
+                            $db->resetFetch($admin_buy_result);
+                          ?>
                         </select>
                         <label for="2char4">ประเภทหวยที่ซื้อ&nbsp;&nbsp;( 2 หรือ 3 ตัว )</label>
                         <div class="w-clearfix">
@@ -360,7 +369,7 @@
                             <label class="w-form-label" for="radio">โต๊ด</label>
                           </div>
                         </div>
-                        <input class="w-button" id="search-lotto" type="submit" value="Submit" data-wait="Please wait...">
+                        <input class="w-button" id="search-lotto-admin" name="search_lotto_admin" type="submit" value="Submit" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
@@ -372,7 +381,9 @@
                       <table class="table table-condensed">
                         <thead>
                           <tr>
-                            <th>งวดที่</th>
+                            <th>วันทีซื้อ</th>
+                            <th>งวดที่ซื้อ</th>
+                            <th>ผู้ซื้อ</th>
                             <th>ประเภท</th>
                             <th>ตำแหน่ง</th>
                             <th>ประเภทที่ซื้อ</th>
@@ -381,125 +392,48 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                          </tr>
-                          <tr>
-                            <td colspan="4">รวมทั้งสิ้น ​</td>
-                            <td>14</td>
-                            <td>14,000,000.00</td>
-                          </tr>
+                          <?php
+                            $total = 0;
+                            $rows = 0;
+                            if ($db->numRows($search_admin_result) > 0) {
+                              while($row = $db->fetchNextObject($search_admin_result))
+                              {
+                                if ($row->lotto_typedigit <= 2) {
+                                  $pay_type = "-";
+                                }
+                                else{
+                                  $pay_type = $row->lotto_typedigit == "teng" ? "เต้ง" : "โต๊ด";
+                                }
+
+                                $time = strtotime($row->buy_cycle);
+                                $newformat_cycle = date('d/m/Y',$time);
+                                $time2 = strtotime($row->buy_time);
+                                $newformat_cycle2 = date('d/m/Y',$time2);
+                                $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง" ;
+                                $price = number_format($row->lotto_price);
+                                $total += $row->lotto_price;
+                                $rows++;
+                                echo "<tr>";
+                                echo "  <td>{$newformat_cycle2}</td>";
+                                echo "  <td>{$newformat_cycle}</td>";
+                                echo "  <td>{$row->fullname}</td>";
+                                echo "  <td>{$row->lotto_typedigit} ตัว</td>";
+                                echo "  <td>{$pos}</td>";
+                                echo "  <td>{$pay_type}</td>";
+                                echo "  <td>{$row->lotto_number}</td>";
+                                echo "  <td>{$price}</td>";
+                                echo "</tr>";
+                              }
+                              $db->resetFetch($search_admin_result);
+                            }
+                          ?>
                         </tbody>
                       </table>
+                      <div class="summary">
+                        <span class="sum_topic">รวมทั้งสิ้น ​</span>
+                        <span class="qty"><?php echo $rows; ?> รายการ</span>
+                        <span class="total_price"><?php echo number_format($total); ?> บาท</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -507,9 +441,7 @@
             </div>
             <div class="w-clearfix content-block">
               <h1 id="management-payment">จัดการการชำระเงิน</h1>
-              <p>คำอธิบาย
-                <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
-                nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+
               <div>
                 <h4>รายการที่ยังไม่ได้ชำระเงิน</h4>
                 <div class="w-form">
@@ -583,9 +515,7 @@
 
             <div class="w-clearfix content-block">
               <h1 id="management-members">จัดการ User</h1>
-              <p>คำอธิบาย
-                <br>Section description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus
-                nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+
               <div>
                 <h4>มีสมาชิก <? echo $member_count; ?> คน</h4>
               </div>
