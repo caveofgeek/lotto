@@ -452,7 +452,7 @@
               <div>
                 <h4>รายการที่ยังไม่ได้ชำระเงิน</h4>
                 <div class="w-form">
-                  <form id="manage-payment" name="manage-payment" method="post" action="index.php#management-payment" data-name="Manage Payment Form">
+                  <form action="index.php#management-payment" id="manage-payment" name="manage-payment" method="post" action="index.php#management-payment" data-name="Manage Payment Form">
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
@@ -467,50 +467,27 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                            <td align="center">
-                              <input type="checkbox">
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                            <td align="center">
-                              <input type="checkbox">
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                            <td align="center">
-                              <input type="checkbox">
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28 พฤษภาคม 2556</td>
-                            <td>2 ตัว</td>
-                            <td>บน</td>
-                            <td>-</td>
-                            <td>123</td>
-                            <td>1,000,000.00</td>
-                            <td align="center">
-                              <input type="checkbox">
-                            </td>
-                          </tr>
+                          <?php
+                            while ($row = $db->fetchNextObject($unpaid_lotto_result)) {
+                              $time = strtotime($row->buy_cycle);
+                              $newformat_cycle = date('d/m/Y',$time);
+                              $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง";
+
+                              if ($row->lotto_typedigit <= 2) $pay_type = "-";
+                              else $pay_type = $row->lotto_typedigit == "teng" ? "เต้ง" : "โต๊ด";
+
+                              $price = number_format($row->lotto_price);
+                          ?>
+                            <tr>
+                              <td><? echo $newformat_cycle; ?></td>
+                              <td><? echo $row->lotto_typedigit; ?> ตัว</td>
+                              <td><? echo $pos; ?></td>
+                              <td><? echo $pay_type; ?></td>
+                              <td><? echo $row->lotto_number; ?></td>
+                              <td><? echo $price; ?></td>
+                              <td><input type="checkbox" name="confirm_payment[]" value="<? echo $row->buy_id; ?>"></td>
+                            </tr>
+                          <? } ?>
                         </tbody>
                       </table>
                     </div>
@@ -541,18 +518,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <?
-                          $members = $db->query("select * from user where user_id!={$_SESSION['uid']} and permission!='admin'");
-
-                          while ($row = mysql_fetch_array($members)) {
-                        ?>
+                        <?php while ($row = $db->fetchNextObject($members)) { ?>
                           <tr>
-                            <td><? echo $row['fullname']; ?></td>
-                            <td><? echo $row['nickname']; ?></td>
-                            <td><? echo $row['phone']; ?></td>
-                            <td><? echo $row['username']; ?></td>
-                            <td><input type="checkbox" name="permission[]" value="<? echo $row['user_id']; ?>"></td>
-                            <td><input type="checkbox" name="del_member[]" value="<? echo $row['user_id']; ?>"></td>
+                            <td><? echo $row->fullname; ?></td>
+                            <td><? echo $row->nickname; ?></td>
+                            <td><? echo $row->phone; ?></td>
+                            <td><? echo $row->username; ?></td>
+                            <td><input type="checkbox" name="permission[]" value="<? echo $row->user_id; ?>"></td>
+                            <td><input type="checkbox" name="del_member[]" value="<? echo $row->user_id; ?>"></td>
                           </tr>
                         <? } ?>
                       </tbody>
