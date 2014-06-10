@@ -79,13 +79,14 @@
                         <label for="price">จำนวนเงิน(บาท)</label>
                         <input class="w-input small-size" id="price" type="text" placeholder="ใส่จำนวนเงิน" name="price" data-name="price">
                         <p id="alert-price" class="helper">กรุณาระบุราคาเป็นตัวเลขเท่านั้น</p>
-                        <input class="w-button" id="sub_add_lotto" name="sub_add_lotto" type="submit" value="Submit" disabled>
+                        <input class="w-button" id="sub_add_lotto" name="sub_add_lotto" type="submit" value="บันทึก" disabled>
                       </form>
                     </div>
                   </div>
                 </div>
                 <div class="w-col w-col-9">
                   <div class="detail-lotto">
+                    <h4>รายการซื้อของ <?php echo $_SESSION['username']; ?></h4>
                     <div class="w-embed">
                       <table class="table table-condensed" id="table-lotto">
                         <thead>
@@ -103,13 +104,14 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="summary">
+                    <div class="summary" id="sum-user-lotto">
                       <span class="sum_topic"></span><span class="qty"></span><span class="total_price"></span>
                     </div>
                     <div class="w-embed btn-confirm">
                       <form id="confirm-lotto" action="#" method="post" name="confirm-lotto" data-name="Lotto Confirm Form">
                         <div></div>
                         <input class="w-button" id="confirm_lotto" name="confirm_lotto" type="submit" value="ยืนยันการสั่งซื้อ">
+                        <input class="w-button" id="print_lotto" name="print_lotto" type="submit" value="ปริ้น">
                       </form>
                     </div>
                   </div>
@@ -117,7 +119,7 @@
               </div>
             </div>
             <div class="w-clearfix content-block">
-              <h1 id="member-report">รายงานการซื้อของ <?php echo $_SESSION['username']; ?></h1>
+              <h1 id="member-report">ค้นหารายการซื้อของ <?php echo $_SESSION['username']; ?></h1>
 
               <div class="w-row">
                 <div class="w-col w-col-3">
@@ -168,13 +170,14 @@
                             <label class="w-form-label" for="radio">โต๊ด</label>
                           </div>
                         </div>
-                        <input class="w-button" id="sub_user_report" name="sub_user_report" type="submit" value="Submit" data-wait="Please wait...">
+                        <input class="w-button" id="sub_user_report" name="sub_user_report" type="submit" value="บันทึก" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
                 </div>
                 <div class="w-col w-col-9">
-                  <div class="detail-lotto">
+                  <div class="detail-user-buying">
+                    <h4>รายงานสรุปการซื้อของ <?php echo $_SESSION['username']; ?></h4>
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
@@ -232,6 +235,7 @@
                         <span class="qty"><?php echo $rows; ?> รายการ</span>
                         <span class="total_price"><?php echo number_format($total); ?> บาท</span>
                       </div>
+                      <input class="w-button" id="print_user_buying" name="print_user_buying" type="submit" value="ปริ้น">
                     </div>
                   </div>
                 </div>
@@ -256,13 +260,14 @@
                             $db->resetFetch($buy_result);
                           ?>
                         </select>
-                        <input class="w-button" id="search_lotto_payment" name="search_lotto_payment" type="submit" value="Submit" data-wait="Please wait...">
+                        <input class="w-button" id="search_lotto_payment" name="search_lotto_payment" type="submit" value="บันทึก" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
                 </div>
                 <div class="w-col w-col-9">
-                  <div class="detail-lotto">
+                  <div class="detail-user-payment">
+                    <h4>รายงานการชำระเงินของ <?php echo $_SESSION['username']; ?></h4>
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
@@ -296,6 +301,7 @@
                           ?>
                         </tbody>
                       </table>
+                      <input class="w-button" id="print_user_payment" name="print_user_payment" type="submit" value="ปริ้น">
                     </div>
                   </div>
                 </div>
@@ -314,7 +320,7 @@
                   <div class="form">
                     <div class="w-form">
                       <form id="result-buying" name="result-buying" method="post" action="index.php#admin-report-buying" data-name="Result Form">
-                        <label for="radio">ค้นหาจากวันที่ซื้อ่</label>
+                        <label for="radio">ค้นหาจากวันที่ซื้อ</label>
                         <select class="w-select small-size" id="find_date3" name="find_date3">
                           <?php
                             while($row = $db->fetchNextObject($admin_buy_result)) {
@@ -369,14 +375,14 @@
                             <label class="w-form-label" for="radio">โต๊ด</label>
                           </div>
                         </div>
-                        <input class="w-button" id="search-lotto-admin" name="search_lotto_admin" type="submit" value="Submit" data-wait="Please wait...">
+                        <input class="w-button" id="search-lotto-admin" name="search_lotto_admin" type="submit" value="บันทึก" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
                 </div>
                 <div class="w-col w-col-9">
-                  <div class="detail-lotto">
-                    <h4>ตัวเลขที่ซื้อทั้งหมด xx&nbsp;&nbsp;ตัว</h4>
+                  <div class="report-buying">
+                    <h4>รายงานสรุปการซื้อ</h4>
                     <div class="w-embed">
                       <table class="table table-condensed">
                         <thead>
@@ -436,6 +442,7 @@
                       </div>
                     </div>
                   </div>
+                  <input class="w-button" id="print_report_buying" name="print_report_buying" type="submit" value="ปริ้น">
                 </div>
               </div>
             </div>
@@ -507,7 +514,7 @@
                         </tbody>
                       </table>
                     </div>
-                    <input class="w-button btn-confirm-cash" id="sub_manage_payment" name="sub_manage_payment" type="submit" value="Submit" data-wait="Please wait...">
+                    <input class="w-button btn-confirm-cash" id="sub_manage_payment" name="sub_manage_payment" type="submit" value="บันทึก" data-wait="Please wait...">
                   </form>
                 </div>
               </div>
@@ -551,7 +558,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <input class="w-button btn-confirm-cash" id="sub_manage_user" name="sub_manage_user" type="submit" value="Submit" data-wait="Please wait...">
+                  <input class="w-button btn-confirm-cash" id="sub_manage_user" name="sub_manage_user" type="submit" value="บันทึก" data-wait="Please wait...">
                 </form>
               </div>
             </div>
@@ -565,6 +572,7 @@
   </div>
   <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="js/webflow.js"></script>
+  <script type="text/javascript" src="js/print.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
   <!--[if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
 </body>
