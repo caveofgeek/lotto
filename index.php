@@ -313,7 +313,7 @@
           {
         ?>
             <div class="w-clearfix content-block">
-              <h1 id="admin-report-buying">รายงานสรุปการซื้อหวย (ADMIN)</h1>
+              <h1 id="admin-report-buying">รายงานสรุปการซื้อหวย</h1>
 
               <div class="w-row">
                 <div class="w-col w-col-3">
