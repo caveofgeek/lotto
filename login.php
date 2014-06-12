@@ -4,7 +4,7 @@
 <html data-wf-site="538365b95aa5711a549509d5">
 <head>
   <meta charset="utf-8">
-  <title>Login</title>
+  <title>เข้าใช้งานระบบ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="Webflow">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
@@ -20,8 +20,8 @@
       <h2>เข้าใช้งานระบบ</h2>
       <div class="w-form">
         <form action='#' method='POST'  id="form-login" name="form-login" data-name="Login Form">
-          <input class="w-input form-padding" id="username" type="text" placeholder="Enter your username" name="username" data-name="Username" required="required">
-          <input class="w-input form-padding" id="password" type="password" placeholder="Enter your password" name="password" data-name="Password" required="required">
+          <input class="w-input form-padding" id="username" type="text" placeholder="ชื่อผู้ใช้งานระบบ" name="username" data-name="Username" required="required">
+          <input class="w-input form-padding" id="password" type="password" placeholder="รหัสผ่าน" name="password" data-name="Password" required="required">
           <input class="w-button btn-submit" type="submit" name="submit" value="Submit" data-wait="Please wait..."><a class="link-registor" href="registration.php">สมัครสมาชิกใหม่</a>
         </form>
         <? if(isset($_POST['submit'])){ ?>
@@ -32,7 +32,7 @@
       </div>
     </section>
   </div>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="js/webflow.js"></script>
   <!--[if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
 </body>

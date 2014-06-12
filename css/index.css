@@ -1,3 +1,11 @@
+@media print {
+    input[type="submit"] {
+      display: none;
+    }
+    #table-lotto th:last-child, #table-lotto td:last-child {
+      display: none;
+    }
+}
 body {
   background-color: white;
   font-family: Arial, Helvetica, sans-serif;
@@ -13,34 +21,10 @@ h1 {
   line-height: 44px;
   font-weight: 700;
 }
-h2 {
-  margin: 10px 0px;
-  font-size: 32px;
-  line-height: 36px;
-  font-weight: 700;
-}
-h3 {
-  margin: 10px 0px;
-  font-size: 24px;
-  line-height: 30px;
-  font-weight: 700;
-}
 h4 {
   margin: 10px 0px;
   font-size: 18px;
   line-height: 24px;
-  font-weight: 700;
-}
-h5 {
-  margin: 10px 0px;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-}
-h6 {
-  margin: 10px 0px;
-  font-size: 12px;
-  line-height: 18px;
   font-weight: 700;
 }
 p {
@@ -70,7 +54,6 @@ p {
   text-align: center;
 }
 .content-column {
-  padding-top: 50px;
   padding-right: 0px;
   padding-left: 0px;
   border-left: 1px solid #ccc;
@@ -133,7 +116,7 @@ p {
 }
 .fixed-nav {
   position: fixed;
-  width: 33.34%;
+  width: 25%;
 }
 .radio-up {
   width: 50px;
@@ -159,6 +142,25 @@ p {
 .btn-confirm-cash {
   margin-top: 15px;
 }
+
+.helper{
+  display: none;
+  color:red;
+  font-size: 12px;
+}
+
+div.summary {
+  width: 100%;
+  font-weight: bold;
+  font-size:16px;
+  text-align: right;
+}
+
+div.summary span {
+  margin-left: 30px;
+  margim-right: 30px;
+}
+
 @media (max-width: 991px) {
   .image-example {
     background-image: url('../images/example-bg.png');
