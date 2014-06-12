@@ -12,7 +12,6 @@
   <link rel="stylesheet" type="text/css" href="css/index.css">
   <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
   <script type="text/javascript" src="js/modernizr.js"></script>
-  <link rel="shortcut icon" type="image/x-icon" href="https://y7v4p6k4.ssl.hwcdn.net/placeholder/favicon.ico">
   <link rel="apple-touch-icon" href="https://y7v4p6k4.ssl.hwcdn.net/51e1a6dc3bc6b24571000014/51e1ba063522c7b57b000061_thumbnail-starter.png">
 </head>
 <body>
@@ -36,8 +35,21 @@
                       <form id="buy-lotto" action="index.php#buying-lotto" method="post" name="buy-lotto" data-name="Lotto Buying Form">
                         <label for="name">งวดที่ซื้อ</label>
                         <select class="w-select small-size" id="date_lotto" name="date_lotto">
-                            <option value="<?php echo $cycle1; ?>"><?php echo $cycle1; ?></option>
-                            <option value="<?php echo $cycle2; ?>"><?php echo $cycle2; ?></option>
+                          <?php
+                            if (date('d') == "01")
+                            {
+                              echo '<option value='.$cycle1.'>'.$cycle1.'</option>';
+                            }
+                            if (date('d') <= 16)
+                            {
+                              echo '<option value='.$cycle2.'>'.$cycle2.'</option>';
+                              echo '<option value='.$nextcycle.'>'.$nextcycle.'</option>';
+                            }
+                            else
+                            {
+                              echo '<option value='.$nextcycle.'>'.$nextcycle.'</option>';
+                            }
+                          ?>
                         </select>
                         <label for="2char">ประเภทหวยที่ซื้อ&nbsp;&nbsp;( 2 หรือ 3 ตัว )</label>
                         <div class="w-clearfix">
@@ -129,6 +141,7 @@
                         <label for="radio">ค้นหาจากวันทีซื้อ</label>
                         <select class="w-select small-size" id="find_date" name="find_date">
                           <?php
+                            echo "<option value='All'>ทั้งหมด</option>";
                             while($row = $db->fetchNextObject($buy_result)) {
                               $time = strtotime($row->buy_time);
                               $newformat = date('d/m/Y',$time);
@@ -170,7 +183,7 @@
                             <label class="w-form-label" for="radio">โต๊ด</label>
                           </div>
                         </div>
-                        <input class="w-button" id="sub_user_report" name="sub_user_report" type="submit" value="บันทึก" data-wait="Please wait...">
+                        <input class="w-button" id="sub_user_report" name="sub_user_report" type="submit" value="ค้นหา" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
@@ -188,7 +201,8 @@
                             <th>ตำแหน่ง</th>
                             <th>ประเภทที่ซื้อ</th>
                             <th>เลขที่ซื้อ</th>
-                            <th>ราคา ( บาท )</th>
+                            <th>จำนวนที่ซื้อ</th>
+                            <th>ราคารวม ( บาท )</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -203,7 +217,7 @@
                                   $pay_type = "-";
                                 }
                                 else{
-                                  $pay_type = $row->lotto_typedigit == "teng" ? "เต้ง" : "โต๊ด";
+                                  $pay_type = $row->lotto_pay == "teng" ? "เต้ง" : "โต๊ด";
                                 }
 
                                 $time = strtotime($row->buy_cycle);
@@ -213,7 +227,7 @@
                                 $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง" ;
                                 $price = number_format($row->lotto_price);
                                 $total += $row->lotto_price;
-                                $rows++;
+                                $rows += $row->qty_lotto;
                                 echo "<tr>";
                                 echo "  <td>{$newformat_cycle2}</td>";
                                 echo "  <td>{$newformat_cycle}</td>";
@@ -221,6 +235,7 @@
                                 echo "  <td>{$pos}</td>";
                                 echo "  <td>{$pay_type}</td>";
                                 echo "  <td>{$row->lotto_number}</td>";
+                                echo "  <td>{$row->qty_lotto}</td>";
                                 echo "  <td>{$price}</td>";
                                 echo "</tr>";
                               }
@@ -242,6 +257,60 @@
               </div>
             </div>
             <div class="w-clearfix content-block">
+              <h1 id="management-payment">จัดการการชำระเงิน</h1>
+
+              <div>
+                <h4>รายการที่ยังไม่ได้ชำระเงิน</h4>
+                <div class="w-form">
+                  <form action="index.php#management-payment" id="manage-payment" name="manage-payment" method="post" action="index.php#management-payment" data-name="Manage Payment Form">
+                    <div class="w-embed">
+                      <table class="table table-condensed">
+                        <thead>
+                          <tr>
+                            <th>วันที่ซื้อ</th>
+                            <th>งวดที่</th>
+                            <th>ประเภท</th>
+                            <th>ตำแหน่ง</th>
+                            <th>ประเภทที่ซื้อ</th>
+                            <th>เลขที่ซื้อ</th>
+                            <th>ราคา ( บาท )</th>
+                            <th>ยืนยันการชำระเงิน</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php
+                            while ($row = $db->fetchNextObject($unpaid_lotto_result)) {
+                              $time = strtotime($row->buy_cycle);
+                              $newformat_cycle = date('d/m/Y',$time);
+                              $time2 = strtotime($row->buy_time);
+                              $newformat_time = date('d/m/Y',$time2);
+                              $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง";
+
+                              if ($row->lotto_typedigit <= 2) $pay_type = "-";
+                              else $pay_type = $row->lotto_pay == "teng" ? "เต้ง" : "โต๊ด";
+
+                              $price = number_format($row->lotto_price);
+                          ?>
+                            <tr>
+                              <td><? echo $newformat_time; ?></td>
+                              <td><? echo $newformat_cycle; ?></td>
+                              <td><? echo $row->lotto_typedigit; ?> ตัว</td>
+                              <td><? echo $pos; ?></td>
+                              <td><? echo $pay_type; ?></td>
+                              <td><? echo $row->lotto_number; ?></td>
+                              <td><? echo $price; ?></td>
+                              <td><input type="checkbox" name="confirm_payment[]" value="<? echo $row->lotto_id; ?>"></td>
+                            </tr>
+                          <? } ?>
+                        </tbody>
+                      </table>
+                    </div>
+                    <input class="w-button btn-confirm-cash" id="sub_manage_payment" name="sub_manage_payment" type="submit" value="บันทึก" data-wait="Please wait...">
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="w-clearfix content-block">
               <h1 id="check-payment">ตรวจสอบการชำระเงิน</h1>
 
               <div class="w-row">
@@ -252,6 +321,7 @@
                         <label for="find_date">ค้นหาจากวันที่ซื้อ</label>
                         <select class="w-select small-size" id="find_date2" name="find_date2">
                           <?php
+                            echo "<option value='All'>ทั้งหมด</option>";
                             while($row = $db->fetchNextObject($buy_result)) {
                               $time = strtotime($row->buy_time);
                               $newformat = date('d/m/Y',$time);
@@ -260,7 +330,7 @@
                             $db->resetFetch($buy_result);
                           ?>
                         </select>
-                        <input class="w-button" id="search_lotto_payment" name="search_lotto_payment" type="submit" value="บันทึก" data-wait="Please wait...">
+                        <input class="w-button" id="search_lotto_payment" name="search_lotto_payment" type="submit" value="ค้นหา" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
@@ -275,8 +345,10 @@
                             <th>วันที่ซื้อ</th>
                             <th>การซื้อครั้งที่</th>
                             <th>จำนวนรายการที่ซื้อ</th>
-                            <th>ราคารวม ( บาท )</th>
-                            <th>สถานะการชำระ</th>
+                            <th>ยังไม่ได้ชำระ</th>
+                            <th>ชำระแล้ว</th>
+                            <th>ราคารวมทั้งสิ้น</th>
+                            <th>สถานะการชำระเงิน</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -285,13 +357,20 @@
                             while($row = $db->fetchNextObject($payment_result)) {
                               $time = strtotime($row->buy_time);
                               $newformat = date('d/m/Y',$time);
+                              $get_unsuccesspay = "select sum(lotto_price) from lotto where buy_id = " . $row->buy_id ." and buy_status = 'N'";
+                              $get_successpay = "select sum(lotto_price) from lotto where buy_id = " . $row->buy_id ." and buy_status = 'Y'";
                               $status = $row->buy_status == "N" ? "ยังไม่ได้ชำระ" : "ชำระเรียบร้อยแล้ว";
                               $count_lotto = number_format($row->count_lotto);
                               $amount = number_format($row->sum_price);
+                              $unpay = number_format($db->queryUniqueValue($get_unsuccesspay));
+                              $pay = number_format($db->queryUniqueValue($get_successpay));
+                              $status = $amount == $pay ? "ชำระเรียบร้อยแล้ว" : "ยังไม่ได้ชำระ" ;
                               echo "<tr>";
                               echo "  <td>{$newformat}</td>";
                               echo "  <td>{$runno}</td>";
                               echo "  <td>{$count_lotto}</td>";
+                              echo "  <td>{$unpay}</td>";
+                              echo "  <td>{$pay}</td>";
                               echo "  <td>{$amount}</td>";
                               echo "  <td>{$status}</td>";
                               echo "</tr>";
@@ -323,6 +402,7 @@
                         <label for="radio">ค้นหาจากวันที่ซื้อ</label>
                         <select class="w-select small-size" id="find_date3" name="find_date3">
                           <?php
+                           echo "<option value='All'>ทั้งหมด</option>";
                             while($row = $db->fetchNextObject($admin_buy_result)) {
                               $time = strtotime($row->buy_time);
                               $newformat = date('d/m/Y',$time);
@@ -375,7 +455,7 @@
                             <label class="w-form-label" for="radio">โต๊ด</label>
                           </div>
                         </div>
-                        <input class="w-button" id="search-lotto-admin" name="search_lotto_admin" type="submit" value="บันทึก" data-wait="Please wait...">
+                        <input class="w-button" id="search-lotto-admin" name="search_lotto_admin" type="submit" value="ค้นหา" data-wait="Please wait...">
                       </form>
                     </div>
                   </div>
@@ -394,7 +474,10 @@
                             <th>ตำแหน่ง</th>
                             <th>ประเภทที่ซื้อ</th>
                             <th>เลขที่ซื้อ</th>
-                            <th>ราคา ( บาท )</th>
+                            <th>จำนวนที่ซื้อ</th>
+                            <th>ยังไม่ชำระ</th>
+                            <th>ชำระแล้ว</th>
+                            <th>ราคารวม ( บาท )</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -408,7 +491,7 @@
                                   $pay_type = "-";
                                 }
                                 else{
-                                  $pay_type = $row->lotto_typedigit == "teng" ? "เต้ง" : "โต๊ด";
+                                  $pay_type = $row->lotto_pay == "teng" ? "เต้ง" : "โต๊ด";
                                 }
 
                                 $time = strtotime($row->buy_cycle);
@@ -418,7 +501,9 @@
                                 $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง" ;
                                 $price = number_format($row->lotto_price);
                                 $total += $row->lotto_price;
-                                $rows++;
+                                $pay = number_format($row->pay_lotto);
+                                $rows+= $row->qty_lotto;
+                                $unpay = number_format(($row->lotto_price - $row->pay_lotto));
                                 echo "<tr>";
                                 echo "  <td>{$newformat_cycle2}</td>";
                                 echo "  <td>{$newformat_cycle}</td>";
@@ -427,6 +512,9 @@
                                 echo "  <td>{$pos}</td>";
                                 echo "  <td>{$pay_type}</td>";
                                 echo "  <td>{$row->lotto_number}</td>";
+                                echo "  <td>{$row->qty_lotto}</td>";
+                                echo "  <td>{$unpay}</td>";
+                                echo "  <td>{$pay}</td>";
                                 echo "  <td>{$price}</td>";
                                 echo "</tr>";
                               }
@@ -443,56 +531,6 @@
                     </div>
                   </div>
                   <input class="w-button" id="print_report_buying" name="print_report_buying" type="submit" value="ปริ้น">
-                </div>
-              </div>
-            </div>
-            <div class="w-clearfix content-block">
-              <h1 id="management-payment">จัดการการชำระเงิน</h1>
-
-              <div>
-                <h4>รายการที่ยังไม่ได้ชำระเงิน</h4>
-                <div class="w-form">
-                  <form action="index.php#management-payment" id="manage-payment" name="manage-payment" method="post" action="index.php#management-payment" data-name="Manage Payment Form">
-                    <div class="w-embed">
-                      <table class="table table-condensed">
-                        <thead>
-                          <tr>
-                            <th>งวดที่</th>
-                            <th>ประเภท</th>
-                            <th>ตำแหน่ง</th>
-                            <th>ประเภทที่ซื้อ</th>
-                            <th>เลขที่ซื้อ</th>
-                            <th>ราคา ( บาท )</th>
-                            <th>ยืนยันการชำระเงิน</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php
-                            while ($row = $db->fetchNextObject($unpaid_lotto_result)) {
-                              $time = strtotime($row->buy_cycle);
-                              $newformat_cycle = date('d/m/Y',$time);
-                              $pos = $row->lotto_pos == "up" ? "บน" : "ล่าง";
-
-                              if ($row->lotto_typedigit <= 2) $pay_type = "-";
-                              else $pay_type = $row->lotto_typedigit == "teng" ? "เต้ง" : "โต๊ด";
-
-                              $price = number_format($row->lotto_price);
-                          ?>
-                            <tr>
-                              <td><? echo $newformat_cycle; ?></td>
-                              <td><? echo $row->lotto_typedigit; ?> ตัว</td>
-                              <td><? echo $pos; ?></td>
-                              <td><? echo $pay_type; ?></td>
-                              <td><? echo $row->lotto_number; ?></td>
-                              <td><? echo $price; ?></td>
-                              <td><input type="checkbox" name="confirm_payment[]" value="<? echo $row->buy_id; ?>"></td>
-                            </tr>
-                          <? } ?>
-                        </tbody>
-                      </table>
-                    </div>
-                    <input class="w-button btn-confirm-cash" id="sub_manage_payment" name="sub_manage_payment" type="submit" value="บันทึก" data-wait="Please wait...">
-                  </form>
                 </div>
               </div>
             </div>
