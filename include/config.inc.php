@@ -1,6 +1,6 @@
 <?php
   require_once('./class/db.class.php');
-  $db = new DB("theghett_lotto", "localhost", "theghett_lotto", "YVl8PSBp");
+  $db = new DB("admin_lotto", "localhost", "root", "root");
 
   function secure($string) {
     return mysql_real_escape_string($string);
