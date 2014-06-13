@@ -17,9 +17,9 @@
         $buy_id = $db->lastInsertedId();
         foreach ($_POST['lotto_data'] as $row) {
           $lotto = split(",",$row);
-          $time = strtotime($lotto[0]);
-          $newformat = date('Y-d-m',$time);
-          $date_cycle = $newformat;
+          $split_date = split("/", $lotto[0]);
+          $yyyymmdd = $split_date[2]."-".$split_date[1]."-".$split_date[0];
+          $date_cycle = $yyyymmdd;
           $type = $lotto[1];
           $pos = $lotto[2];
           $buy_type = $type == 3 ? $lotto[3] : "NULL";
@@ -89,7 +89,7 @@
           from lotto,buy where lotto.buy_id = buy.buy_id
           and user_id = {$_SESSION['uid']}
           group by buy_cycle,buy_time,lotto_pos,lotto_typedigit,lotto_number,lotto_pay
-          order by buy.buy_time LIMIT 20";
+          order by buy.buy_time,lotto.lotto_id LIMIT 20";
   $search_result = $db->query($sql);
   $db->lastResult = NULL;
 
@@ -122,14 +122,14 @@
           from lotto,buy,user where lotto.buy_id = buy.buy_id and buy.user_id = user.user_id
           group by buy_cycle,buy_time,lotto_pos,lotto_typedigit,lotto_number
           ,lotto_pay,user.fullname
-          order by buy.buy_time,user.fullname";
+          order by buy.buy_time,user.fullname,lotto.lotto_id";
   $search_admin_result = $db->query($sql);
   $db->lastResult = NULL;
 
   // Get unpaid payment for admin
   $sql = "select * from lotto l join buy b on l.buy_id = b.buy_id
           where buy_status = 'N' and user_id = {$_SESSION['uid']}
-          order by buy_time";
+          order by buy_time,l.lotto_id";
   $unpaid_lotto_result = $db->query($sql);
   $db->lastResult = NULL;
 
@@ -169,7 +169,8 @@
     if($buy_type <> "") $search_sql .= " and lotto.lotto_pay = '{$buy_type}'";
 
     $search_sql .= " group by buy_cycle,buy_time,lotto_pos,lotto_typedigit
-                  ,lotto_number,lotto_pay";
+                  ,lotto_number,lotto_pay
+                  order by buy.buy_time,lotto.lotto_id";
 
     $search_result = $db->query($search_sql);
     $db->lastResult = NULL;
@@ -216,7 +217,7 @@
 
     $search_sql .= " group by buy_cycle,buy_time,lotto_pos,lotto_typedigit
                 ,lotto_number,lotto_pay,user.fullname";
-    $search_sql .= " order by buy.buy_time,user.fullname";
+    $search_sql .= " order by buy.buy_time,user.fullname,lotto.lotto_id";
 
     $search_admin_result = $db->query($search_sql);
     $db->lastResult = NULL;

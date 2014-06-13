@@ -359,12 +359,12 @@
                               $newformat = date('d/m/Y',$time);
                               $get_unsuccesspay = "select sum(lotto_price) from lotto where buy_id = " . $row->buy_id ." and buy_status = 'N'";
                               $get_successpay = "select sum(lotto_price) from lotto where buy_id = " . $row->buy_id ." and buy_status = 'Y'";
-                              $status = $row->buy_status == "N" ? "ยังไม่ได้ชำระ" : "ชำระเรียบร้อยแล้ว";
+                              $status = $row->buy_status == "N" ? "ยังชำระไม่ครบ" : "ชำระเรียบร้อยแล้ว";
                               $count_lotto = number_format($row->count_lotto);
                               $amount = number_format($row->sum_price);
                               $unpay = number_format($db->queryUniqueValue($get_unsuccesspay));
                               $pay = number_format($db->queryUniqueValue($get_successpay));
-                              $status = $amount == $pay ? "ชำระเรียบร้อยแล้ว" : "ยังไม่ได้ชำระ" ;
+                              $status = $amount == $pay ? "ชำระเรียบร้อยแล้ว" : "ยังชำระไม่ครบ" ;
                               echo "<tr>";
                               echo "  <td>{$newformat}</td>";
                               echo "  <td>{$runno}</td>";
@@ -484,6 +484,8 @@
                           <?php
                             $total = 0;
                             $rows = 0;
+                            $total_pay = 0;
+                            $total_unpay = 0;
                             if ($db->numRows($search_admin_result) > 0) {
                               while($row = $db->fetchNextObject($search_admin_result))
                               {
@@ -502,8 +504,10 @@
                                 $price = number_format($row->lotto_price);
                                 $total += $row->lotto_price;
                                 $pay = number_format($row->pay_lotto);
+                                $total_pay += $pay;
                                 $rows+= $row->qty_lotto;
                                 $unpay = number_format(($row->lotto_price - $row->pay_lotto));
+                                $total_unpay += $unpay;
                                 echo "<tr>";
                                 echo "  <td>{$newformat_cycle2}</td>";
                                 echo "  <td>{$newformat_cycle}</td>";
@@ -526,7 +530,9 @@
                       <div class="summary">
                         <span class="sum_topic">รวมทั้งสิ้น ​</span>
                         <span class="qty"><?php echo $rows; ?> รายการ</span>
-                        <span class="total_price"><?php echo number_format($total); ?> บาท</span>
+                        <span class="total_price">ค้างชำระ <?php echo number_format($total_unpay); ?> บาท</span>
+                        <span class="total_price">ชำระแล้ว <?php echo number_format($total_pay); ?> บาท</span>
+                        <span class="total_price">ยอดรวมทั้งสิ้น <?php echo number_format($total); ?> บาท</span>
                       </div>
                     </div>
                   </div>
